@@ -16,7 +16,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.tkym.labs</groupId>
-			<artifactId>beanmeta-gen</artifactId>
+			<artifactId>beanmeta-core</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>

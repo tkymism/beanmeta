@@ -24,7 +24,7 @@ import com.tkym.labs.beanmeta.ano.Index;
 import com.tkym.labs.beanmeta.ano.Key;
 
 
-@SupportedAnnotationTypes("jp.tkym.labs.beanstore.ano.Model")
+@SupportedAnnotationTypes("com.tkym.labs.beanmeta.ano.Model")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class ModelAnnotationProcesser extends AbstractProcessor{
 	private ModelDescFactory modelDescFactory = new ModelDescFactory();
@@ -135,9 +135,9 @@ public class ModelAnnotationProcesser extends AbstractProcessor{
 		try {
 			JavaFileObject sourcefile = 
 					processingEnv.getFiler().
-					createSourceFile("jp.tkym.labs.gen."+info.getClassName());
+					createSourceFile("com.tkym.labs.gen."+info.getClassName());
 			writer = new PrintWriter(sourcefile.openWriter(), true);
-			writer.println("package jp.tkym.labs.gen;");
+			writer.println("package com.tkym.labs.gen;");
 			writer.println("public class "+info.getClassName() + " {");
 			writer.println("	public "+info.getClassName()+"(){}");
 			for(String attr : info.getAttrbiteList())

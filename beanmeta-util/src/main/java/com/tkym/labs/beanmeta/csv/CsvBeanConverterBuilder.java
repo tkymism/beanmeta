@@ -24,7 +24,7 @@ public class CsvBeanConverterBuilder<BT,KT>{
 		return this;
 	}
 	@SuppressWarnings("unchecked")
-	CsvBeanConverter<BT,KT> converter(){
+	public CsvBeanConverter<BT,KT> converter(){
 		PropertyMeta<?,?>[] array = new PropertyMeta[list.size()];
 		list.toArray(array);
 		return new CsvBeanConverter<BT, KT>(beanMeta, (PropertyMeta<BT, ?>[])array);

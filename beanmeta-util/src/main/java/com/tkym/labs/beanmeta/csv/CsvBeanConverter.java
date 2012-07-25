@@ -6,7 +6,7 @@ import java.util.List;
 import com.tkym.labs.beanmeta.BeanMeta;
 import com.tkym.labs.beanmeta.PropertyMeta;
 
-class CsvBeanConverter<BT,KT> {
+public class CsvBeanConverter<BT,KT> {
 	private BeanMeta<BT,KT> beanMeta;
 	private PropertyMeta<BT, ?>[] properties;
 	private CsvLineResolver resolver = new CsvLineResolver("\"");
