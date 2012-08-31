@@ -17,8 +17,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.tkym.labs.beanmeta.beans.Bill;
-import com.tkym.labs.beanmeta.beans.BillMeta;
+import com.tkym.labs.beans.Bill;
+import com.tkym.labs.beans.BillMeta;
 
 public class IndexedPropertyMetaBuilderTest {
 	@Test

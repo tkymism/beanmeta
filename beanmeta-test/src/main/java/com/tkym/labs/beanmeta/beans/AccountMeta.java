@@ -3,6 +3,8 @@ package com.tkym.labs.beanmeta.beans;
 import com.tkym.labs.beanmeta.AbstractBeanMeta;
 import com.tkym.labs.beanmeta.PropertyAccessorResolver;
 import com.tkym.labs.beanmeta.PropertyMeta;
+import com.tkym.labs.beans.Account;
+import com.tkym.labs.beans.PersonMeta;
 
 /**
  * auto generated java source

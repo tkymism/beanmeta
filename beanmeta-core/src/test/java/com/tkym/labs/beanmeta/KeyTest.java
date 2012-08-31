@@ -6,12 +6,12 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.tkym.labs.beanmeta.beans.Account;
-import com.tkym.labs.beanmeta.beans.AccountMeta;
-import com.tkym.labs.beanmeta.beans.Bill;
-import com.tkym.labs.beanmeta.beans.BillMeta;
-import com.tkym.labs.beanmeta.beans.Person;
-import com.tkym.labs.beanmeta.beans.PersonMeta;
+import com.tkym.labs.beans.Account;
+import com.tkym.labs.beans.AccountMeta;
+import com.tkym.labs.beans.Bill;
+import com.tkym.labs.beans.BillMeta;
+import com.tkym.labs.beans.Person;
+import com.tkym.labs.beans.PersonMeta;
 
 public class KeyTest {
 	

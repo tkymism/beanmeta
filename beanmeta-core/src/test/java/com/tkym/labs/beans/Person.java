@@ -1,13 +1,13 @@
-package com.tkym.labs.beanmeta.beans;
+package com.tkym.labs.beans;
 
 
-public class Generation {
-	private int id;
+public class Person{
+	private long id;
 	private String name;
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {

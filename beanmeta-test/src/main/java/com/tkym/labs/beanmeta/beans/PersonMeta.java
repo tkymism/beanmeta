@@ -3,6 +3,7 @@ package com.tkym.labs.beanmeta.beans;
 import com.tkym.labs.beanmeta.AbstractBeanMeta;
 import com.tkym.labs.beanmeta.PropertyAccessorResolver;
 import com.tkym.labs.beanmeta.PropertyMeta;
+import com.tkym.labs.beans.Person;
 
 public class PersonMeta extends AbstractBeanMeta<Person,Long>{
 	private static final PersonMeta singleton = new PersonMeta();

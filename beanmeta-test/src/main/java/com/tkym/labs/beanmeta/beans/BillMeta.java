@@ -4,6 +4,8 @@ import com.tkym.labs.beanmeta.AbstractBeanMeta;
 import com.tkym.labs.beanmeta.IndexedAccessorResolver;
 import com.tkym.labs.beanmeta.PropertyAccessorResolver;
 import com.tkym.labs.beanmeta.PropertyMeta;
+import com.tkym.labs.beans.AccountMeta;
+import com.tkym.labs.beans.Bill;
 
 public class BillMeta extends AbstractBeanMeta<Bill, Integer>{
 	private PropertyAccessorResolver<Bill, Integer> _no_ = new PropertyAccessorResolver<Bill, Integer>(){

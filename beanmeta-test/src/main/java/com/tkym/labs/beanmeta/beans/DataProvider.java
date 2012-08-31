@@ -1,5 +1,9 @@
 package com.tkym.labs.beanmeta.beans;
 
+import com.tkym.labs.beans.Account;
+import com.tkym.labs.beans.Bill;
+import com.tkym.labs.beans.Person;
+
 public class DataProvider {
 	public static Person create(long id){
 		Person p = new Person();

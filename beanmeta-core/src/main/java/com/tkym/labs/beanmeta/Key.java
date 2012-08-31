@@ -5,16 +5,17 @@ package com.tkym.labs.beanmeta;
 
 
 public class Key<BT,KT>{
-	private BeanMeta<BT, KT> beanMeta; 
-	private KT value;
-	private Key<?,?> parent;
-	Key(Key<?,?> parent, BeanMeta<BT, KT> beanMeta, KT value){
+	private final Class<BT> beanType;
+	private final BeanMeta<BT, KT> beanMeta; 
+	private final KT value;
+	private final Key<?,?> parent;
+	Key(Key<?,?> parent, Class<BT> cls, KT value){
 		this.parent = parent;
-		this.beanMeta = beanMeta;
+		this.beanType = cls;
+		this.beanMeta = BeanMetaUtils.get().get(cls);
 		this.value = value;
 		checkParentBeanMeta();
 	}
-
 	private void checkParentBeanMeta(){
 		BeanMeta<?,?> definedMeta = beanMeta.parent();
 		if (definedMeta == null){
@@ -45,22 +46,12 @@ public class Key<BT,KT>{
 	public BeanMeta<BT, KT> getBeanMeta() {
 		return beanMeta;
 	}
-	public void setBeanMeta(BeanMeta<BT, KT> beanMeta) {
-		this.beanMeta = beanMeta;
-	}
 	public KT value() {
 		return value;
-	}
-	public void setValue(KT value) {
-		this.value = value;
 	}
 	public Key<?,?> getParent() {
 		return parent;
 	}
-	public void setParent(Key<?,?> parent) {
-		this.parent = parent;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -129,5 +120,8 @@ public class Key<BT,KT>{
 		if (parent != null) sb.append(parent.toString());
 		sb.append(" "+beanMeta.getName()+"="+this.value()+", ");
 		return super.toString();
+	}
+	public Class<BT> getBeanType() {
+		return beanType;
 	}
 }

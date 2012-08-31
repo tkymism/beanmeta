@@ -6,6 +6,7 @@ import java.util.Map;
 import com.tkym.labs.beanmeta.AbstractBeanMeta;
 import com.tkym.labs.beanmeta.PropertyAccessorResolver;
 import com.tkym.labs.beanmeta.PropertyMeta;
+import com.tkym.labs.beans.Generation;
 
 public class GenerationMeta extends AbstractBeanMeta<Generation, Integer>{
 	private final static Map<String, GenerationMeta> instanceMap = new HashMap<String, GenerationMeta>();

@@ -14,7 +14,10 @@ public class BeanMetaUtils {
 	public <B,K> void register(Class<B> cls, BeanMeta<B,K> meta){ 
 		map.put(cls, meta);
 	}
-	
+	@SuppressWarnings("unchecked")
+	public <B,K> BeanMeta<B,K> get(Class<B> cls){
+		return (BeanMeta<B,K>) map.get(cls);
+	}
 	public <B,K> BeanTypeMetaUtils<B,K> meta(BeanMeta<B, K> meta){
 		return new BeanTypeMetaUtils<B, K>(meta);
 	}

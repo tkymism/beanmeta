@@ -1,4 +1,4 @@
-package com.tkym.labs.beanmeta.beans;
+package com.tkym.labs.beans;
 
 import java.util.HashMap;
 import java.util.Map;

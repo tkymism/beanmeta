@@ -39,7 +39,7 @@ public abstract class AbstractBeanMeta<BT, KT> implements BeanMeta<BT, KT>{
 	}
 	@Override
 	public final Key<BT,KT> key(Key<?,?> parent,  KT value) {
-		return new Key<BT, KT>(parent, this, value);
+		return new Key<BT, KT>(parent, beanType, value);
 	};
 	@Override
 	public String parentKeyProperty(BeanMeta<?, ?> parent) {

@@ -1,4 +1,4 @@
-package com.tkym.labs.beanmeta.beans;
+package com.tkym.labs.beans;
 
 public class DataProvider {
 	public static Person create(long id){
