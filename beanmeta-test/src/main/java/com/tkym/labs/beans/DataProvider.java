@@ -1,4 +1,4 @@
-package com.tkym.labs.beanmeta.beans;
+package com.tkym.labs.beans;
 
 import com.tkym.labs.beans.Account;
 import com.tkym.labs.beans.Bill;

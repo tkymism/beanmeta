@@ -28,7 +28,6 @@ public class BillMeta extends AbstractBeanMeta<Bill, Integer>{
 		}
 	};
 	public final PropertyMeta <Bill,Float> amount = property("amount", Float.class).accessor(_amount_);
-	
 	private IndexedAccessorResolver<Bill, String> _item_ = new IndexedAccessorResolver<Bill, String>() {
 		@Override
 		public void set(Bill bean, int index, String value) {
@@ -40,7 +39,6 @@ public class BillMeta extends AbstractBeanMeta<Bill, Integer>{
 		}
 	};
 	public final PropertyMeta<Bill,String>[] item = arrays("item", String.class).start(1).length(20).accessor(_item_);
-	
 	private static final BillMeta singleton = new BillMeta();
 	public final static BillMeta get(){ return singleton; }
 	private BillMeta() { super("bill", Bill.class); }

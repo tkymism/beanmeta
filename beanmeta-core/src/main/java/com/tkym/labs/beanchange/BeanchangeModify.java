@@ -4,6 +4,7 @@ import static com.tkym.labs.beanchange.Beanchange.BeanchangeState.MODIFY;
 
 import com.tkym.labs.beanmeta.BeanMetaUtils;
 import com.tkym.labs.beanmeta.Key;
+import com.tkym.labs.beanmeta.BeanMetaUtils.BeanTypeMetaUtils;
 
 public class BeanchangeModify<B,K> extends Beanchange<B,K>{
 	private final B before;
@@ -20,7 +21,8 @@ public class BeanchangeModify<B,K> extends Beanchange<B,K>{
 		return after;
 	}
 	boolean isEquals(){
-		return BeanMetaUtils.get().equals(before, after);
+		BeanTypeMetaUtils<B,K> type = BeanMetaUtils.get().meta(key().getBeanMeta());
+		return type.equals(before, after);
 	}
 	public BeanchangeState getState(){
 		return MODIFY;

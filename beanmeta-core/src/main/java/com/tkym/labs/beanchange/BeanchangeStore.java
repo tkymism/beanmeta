@@ -54,12 +54,12 @@ public class BeanchangeStore{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <B,K> BeanchangeStoreView<B,K> viewOf(BeanMeta<B,K> beanMeta){
+	public <B,K> BeanchangeStoreView<B,K,Beanchange<B,K>> viewOf(BeanMeta<B,K> beanMeta){
 		Map<Key<B,K>, Beanchange<B,K>> map = new HashMap<Key<B,K>, Beanchange<B,K>>();
 		for (Key<?,?> key : map().keySet())
 			if (key.getBeanMeta().equals(beanMeta))
 				map.put( (Key<B,K>) key, (Beanchange<B,K>) map().get(key));
-		return new BeanchangeStoreView<B, K>(map);
+		return new BeanchangeStoreView<B, K, Beanchange<B,K>>(map);
 	}
 	
 	private <B,K> Beanchange<B,K> convert(Beanchange<B,K> managed, B bean){

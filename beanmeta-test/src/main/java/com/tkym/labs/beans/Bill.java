@@ -1,4 +1,4 @@
-package com.tkym.labs.beanmeta.beans;
+package com.tkym.labs.beans;
 
 
 public class Bill {

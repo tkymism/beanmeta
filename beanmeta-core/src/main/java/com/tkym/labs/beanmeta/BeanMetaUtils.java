@@ -45,20 +45,17 @@ public class BeanMetaUtils {
 		}
 		public boolean equals(BT b1, BT b2){
 			for (String name : meta.getPropertyNames())
-				if (!meta(meta.getPropertyMeta(name)).same(b1, b2)) return false;
+				if(!meta(meta.getPropertyMeta(name)).same(b1, b2)) return false;
 			return true;
 		}
-		
 		public boolean sameKey(BT b1, BT b2){
 			return meta(meta.getKeyPropertyMeta()).same(b1, b2);
 		}
-		
 		public BT clone(BT source){
 			BT clone = meta.newInstance();
 			copy(source, clone);
 			return clone;
 		}
-		
 		void copy(BT source, BT target){
 			for(String name : meta.getPropertyNames())
 				meta(meta.getPropertyMeta(name)).copy(source, target);
@@ -79,7 +76,10 @@ public class BeanMetaUtils {
 		public boolean same(BT b1, BT b2){
 			PT p1 = meta.access(b1).get();
 			PT p2 = meta.access(b2).get();
-			return p1.equals(p2);
+			if (p1 == null && p2 == null) return true;
+			else if (p1 != null && p2 == null) return false;
+			else if (p1 == null && p2 != null) return false;
+			else return p1.equals(p2);
 		}
 		
 		public int compare(BT b1, BT b2){

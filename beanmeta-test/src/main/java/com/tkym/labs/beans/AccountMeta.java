@@ -1,4 +1,4 @@
-package com.tkym.labs.beanmeta.beans;
+package com.tkym.labs.beans;
 
 import com.tkym.labs.beanmeta.AbstractBeanMeta;
 import com.tkym.labs.beanmeta.PropertyAccessorResolver;
