@@ -4,8 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-
-
+/**
+ * 
+ * @author takayama 
+ * @param <BT> Type of Bean
+ * @param <KT> Type of Key
+ */
 public abstract class AbstractBeanMeta<BT, KT> implements BeanMeta<BT, KT>{
 	private final Class<BT> beanType;
 	private final String name;
@@ -26,6 +30,10 @@ public abstract class AbstractBeanMeta<BT, KT> implements BeanMeta<BT, KT>{
 		return this.name;
 	}
 	@Override
+	public Class<BT> getBeanType(){
+		return this.beanType;
+	}
+	@Override
 	public <PBT,PKT> BeanMeta<PBT,PKT> parent(){
 		return null;
 	}
@@ -39,10 +47,38 @@ public abstract class AbstractBeanMeta<BT, KT> implements BeanMeta<BT, KT>{
 	}
 	@Override
 	public final Key<BT,KT> key(Key<?,?> parent,  KT value) {
-		return new Key<BT, KT>(parent, beanType, value);
-	};
+		return new Key<BT, KT>(parent, this, value);
+	}
 	@Override
 	public String parentKeyProperty(BeanMeta<?, ?> parent) {
 		return parent.getKeyPropertyMeta().getPropertyName();
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((beanType == null) ? 0 : beanType.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		@SuppressWarnings("unchecked")
+		AbstractBeanMeta<BT, KT> other = (AbstractBeanMeta<BT, KT>) obj;
+		if (beanType == null) {
+			if (other.beanType != null)
+				return false;
+		} else if (!beanType.equals(other.beanType))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 }

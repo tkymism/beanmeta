@@ -7,4 +7,5 @@ import java.lang.annotation.Target;
 public @interface Model {
 	public String name() default "";
 	public Class<?> parent() default Void.class;
+	public boolean isSuffix() default false;
 }

@@ -5,14 +5,12 @@ package com.tkym.labs.beanmeta;
 
 
 public class Key<BT,KT>{
-	private final Class<BT> beanType;
 	private final BeanMeta<BT, KT> beanMeta; 
 	private final KT value;
 	private final Key<?,?> parent;
-	Key(Key<?,?> parent, Class<BT> cls, KT value){
+	Key(Key<?,?> parent, BeanMeta<BT, KT> beanMeta, KT value){
 		this.parent = parent;
-		this.beanType = cls;
-		this.beanMeta = BeanMetaUtils.get().get(cls);
+		this.beanMeta = beanMeta;
 		this.value = value;
 		checkParentBeanMeta();
 	}
@@ -52,17 +50,17 @@ public class Key<BT,KT>{
 	public Key<?,?> getParent() {
 		return parent;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((beanMeta == null) ? 0 : beanMeta.getName().hashCode());
+				+ ((beanMeta == null) ? 0 : beanMeta.hashCode());
 		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -71,11 +69,12 @@ public class Key<BT,KT>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Key<?,?> other = (Key<?,?>) obj;
+		@SuppressWarnings("unchecked")
+		Key<BT,KT> other = (Key<BT,KT>) obj;
 		if (beanMeta == null) {
 			if (other.beanMeta != null)
 				return false;
-		} else if (!beanMeta.getName().equals(other.beanMeta.getName()))
+		} else if (!beanMeta.equals(other.beanMeta))
 			return false;
 		if (parent == null) {
 			if (other.parent != null)
@@ -89,7 +88,6 @@ public class Key<BT,KT>{
 			return false;
 		return true;
 	}
-	
 	public boolean isSiblingOf(Key<?,?> other){
 		Key<?,?> otherParent = other.getParent();
 		if (this.parent == null && otherParent == null) return true;
@@ -109,11 +107,9 @@ public class Key<BT,KT>{
 		if (this.equals(other.getParent())) return true;
 		else return isAncestorOf(other.getParent());
 	}
-
 	public boolean isDescendantOf(Key<?,?> other){
 		return other.isAncestorOf(this);
 	}
-	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -122,6 +118,6 @@ public class Key<BT,KT>{
 		return super.toString();
 	}
 	public Class<BT> getBeanType() {
-		return beanType;
+		return beanMeta.getBeanType();
 	}
 }

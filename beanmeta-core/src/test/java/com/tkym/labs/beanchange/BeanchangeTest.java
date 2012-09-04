@@ -26,7 +26,7 @@ public class BeanchangeTest {
 	private static Map<Key<Person,Long>, Person> PERSON_MAP;
 	private static Map<Key<Account,String>, Account> ACCOUNT_MAP;
 	private static Map<Key<Bill,Integer>, Bill> BILL_MAP;
-
+	
 	@BeforeClass
 	public static  void testBeanMetaCase001(){
 		PERSON_MAP = new HashMap<Key<Person,Long>, Person>();
@@ -59,19 +59,18 @@ public class BeanchangeTest {
 		BeanchangeStore changeStore = new BeanchangeStore();
 		for (Key<Person,Long> key : PERSON_MAP.keySet()) 
 			changeStore.attach(key, PERSON_MAP.get(key));
-		
 		Person p1 =
-				PERSON_MAP.get(PersonMeta.get().key(null, 1L));
+				PERSON_MAP.get(
+						PersonMeta.get().key(null, 1L));
 		p1.setName("aaa");
-		changeStore.put(PersonMeta.get().key(null, 1L), p1);
+		changeStore.put(
+				PersonMeta.get().key(null, 1L), p1);
 		List<BeanchangeModify<Person, Long>> modifyList = 
 			changeStore.viewOf(PersonMeta.get()).modify().asList();
 		assertThat(modifyList.size(), is(1));
 		
 		BeanchangeModify<Person, Long> modify = modifyList.get(0);
 		assertThat(modify.getAfter().getName(), is("aaa"));
-		
-		
 	}
 	
 	@Test
@@ -220,4 +219,6 @@ public class BeanchangeTest {
 				changeStore.viewOf(BillMeta.get()).remove().asList();
 		assertThat(remove.size(), is(1000));
 	}
+	
+	
 }

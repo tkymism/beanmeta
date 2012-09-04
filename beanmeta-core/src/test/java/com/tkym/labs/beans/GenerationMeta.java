@@ -1,28 +1,15 @@
 package com.tkym.labs.beans;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.tkym.labs.beanmeta.AbstractBeanMeta;
+import com.tkym.labs.beanmeta.AbstractSuffixBeanMeta;
 import com.tkym.labs.beanmeta.PropertyAccessorResolver;
 import com.tkym.labs.beanmeta.PropertyMeta;
 
-public class GenerationMeta extends AbstractBeanMeta<Generation, Integer>{
-	private final static Map<String, GenerationMeta> instanceMap = new HashMap<String, GenerationMeta>();
-	public static void register(String... keys){
-		for (String key : keys)
-			if (!instanceMap.containsKey(key))
-				instanceMap.put(key, new GenerationMeta(key));
+public class GenerationMeta extends AbstractSuffixBeanMeta<Generation, Integer>{
+	private static final GenerationMeta singleton = new GenerationMeta();
+	private GenerationMeta(){
+		super("generation", Generation.class);
 	}
-	
-	public static GenerationMeta get(String key){
-		return instanceMap.get(key);
-	}
-	
-	private GenerationMeta(String suffix) {
-		super("Generation"+suffix, Generation.class);
-	}
-	
+	public static GenerationMeta get(){ return singleton; }
 	private PropertyAccessorResolver<Generation, Integer> _id_ = new PropertyAccessorResolver<Generation, Integer>(){
 		@Override
 		public Integer get(Generation bean) {
@@ -33,9 +20,7 @@ public class GenerationMeta extends AbstractBeanMeta<Generation, Integer>{
 			bean.setId(value);
 		}
 	};
-	
 	public final PropertyMeta<Generation, Integer> id = property("id", Integer.class).accessor(_id_);
-	
 	private PropertyAccessorResolver<Generation, String> _name_ = new PropertyAccessorResolver<Generation, String>(){
 		@Override
 		public String get(Generation bean) {
@@ -47,14 +32,8 @@ public class GenerationMeta extends AbstractBeanMeta<Generation, Integer>{
 		}
 	};
 	public final PropertyMeta<Generation,String> name = property("name", String.class).accessor(_name_);
-	
 	@Override
-	public PropertyMeta<Generation, Integer> getKeyPropertyMeta() {
-		return id;
-	}
-
+	public PropertyMeta<Generation, Integer> getKeyPropertyMeta() { return id; }
 	@Override
-	public Generation newInstance() {
-		return new Generation();
-	}
+	public Generation newInstance() { return new Generation(); }
 }
