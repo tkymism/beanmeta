@@ -1,10 +1,8 @@
 package com.tkym.labs.beanmeta;
 
+import java.util.Comparator;
 
-
-
-
-public class Key<BT,KT>{
+public class Key<BT,KT> implements Comparable<Key<?,?>>{
 	private final BeanMeta<BT, KT> beanMeta; 
 	private final KT value;
 	private final Key<?,?> parent;
@@ -12,35 +10,7 @@ public class Key<BT,KT>{
 		this.parent = parent;
 		this.beanMeta = beanMeta;
 		this.value = value;
-		checkParentBeanMeta();
 	}
-	private void checkParentBeanMeta(){
-		BeanMeta<?,?> definedMeta = beanMeta.parent();
-		if (definedMeta == null){
-			if (parent != null) 
-				throw new IllegalArgumentException(
-						beanMeta.getName()+"'s "+
-								"parent BeanMeta difine as null " + 
-								", but key parent is setting " + 
-								parent.getBeanMeta().getName());
-		}else{
-			if (parent == null)
-				throw new IllegalArgumentException(
-						beanMeta.getName()+"'s "+
-								"parent BeanMeta difine:" + 
-								beanMeta.parent().getName() +
-								", but key parent is null ");
-			else
-				if (!parent.getBeanMeta().equals(definedMeta))
-					throw new IllegalArgumentException(
-							beanMeta.getName()+"'s "+
-									"parent BeanMeta difine:" + 
-									beanMeta.parent().getName() +
-									", but key parent is " + 
-									parent.getBeanMeta().getName());
-		}
-	}
-	
 	public BeanMeta<BT, KT> getBeanMeta() {
 		return beanMeta;
 	}
@@ -50,7 +20,6 @@ public class Key<BT,KT>{
 	public Key<?,?> getParent() {
 		return parent;
 	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,14 +63,12 @@ public class Key<BT,KT>{
 		if (this.parent != null && otherParent != null && this.parent.equals(otherParent)) return true;
 		return false;
 	}
-	
 	public int rank(){
 		if (this.getParent() == null) 
 			return 0;
 		else 
 			return this.getParent().rank() + 1;
 	} 
-	
 	public boolean isAncestorOf(Key<?,?> other){
 		if (other.getParent() == null) return false;
 		if (this.equals(other.getParent())) return true;
@@ -120,4 +87,37 @@ public class Key<BT,KT>{
 	public Class<BT> getBeanType() {
 		return beanMeta.getBeanType();
 	}
+	@Override
+	public int compareTo(Key<?, ?> o) {
+		return COMPARATOR.compare(this, o);
+	}
+	private static Comparator<Key<?,?>> COMPARATOR = new Comparator<Key<?,?>>() {
+		@Override
+		public int compare(Key<?, ?> o1, Key<?, ?> o2) {
+			if (o1.getParent() != null && o2.getParent() != null){
+				int parent = compare(o1.getParent(), o2.getParent());
+				if (parent != 0) return parent;
+			}
+			return compareValue(o1, o2);
+		}
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		int compareValue(Key<?,?> o1, Key<?,?> o2){
+			Class<?> c1 = o1.getBeanMeta().getKeyPropertyMeta().getPropertyType();
+			Class<?> c2 = o2.getBeanMeta().getKeyPropertyMeta().getPropertyType();
+			if (!c1.equals(c2))
+				throw new IllegalArgumentException(
+						"types are different." +
+						" key1="+c1.getName()+
+						" key2="+c2.getName());
+			if (!Comparable.class.isAssignableFrom(c1))
+				throw new IllegalArgumentException(
+						"type is not Comparable" +
+						" key1="+c1.getName()+
+						" key2="+c2.getName());
+			if (o1.value() == null && o2.value() != null) return -1;
+			else if (o1.value() != null && o2.value() == null) return 1;
+			return ((Comparable) o1.value).compareTo(o2.value);
+		}
+	};
 }
