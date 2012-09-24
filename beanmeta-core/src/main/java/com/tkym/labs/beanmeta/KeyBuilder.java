@@ -23,23 +23,44 @@ public class KeyBuilder<B,K>{
 		chainList.add(chain);
 		return (KeyBuilder<BT,KT>)this;
 	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public Key<B, K> build(){
 		Key<?, ?> current = this.parent;
 		for (KeyBuildChain<?,?> chain : chainList)
-			current = new KeyFactory(chain.beanMeta).create(current, chain.value);
+			current = build(current, chain);
 		return (Key<B, K>) current;
 	}
+	@SuppressWarnings("unchecked")
+	private Key<?,?> build(Key<?,?> parent, KeyBuildChain<?,?> chain){
+		@SuppressWarnings({ "rawtypes" })
+		KeyFactory factory = new KeyFactory(chain.beanMeta);
+		if (chain.define.equals(KeyValueDefine.MAX)) return factory.max(parent);
+		else if (chain.define.equals(KeyValueDefine.MIN)) return factory.min(parent);
+		else return factory.create(parent, chain.value); 
+	}
+	private enum KeyValueDefine{ DEFAULT, MAX, MIN }
 	public static class KeyBuildChain<BT, KT>{
 		private final BeanMeta<BT, KT> beanMeta;
 		private final KeyBuilder<?,?> builder;
 		private KT value;
+		private KeyValueDefine define;
 		private KeyBuildChain(KeyBuilder<?,?> builder, BeanMeta<BT, KT> beanMeta) {
 			this.builder = builder;
 			this.beanMeta = beanMeta;
 		}
 		public KeyBuilder<BT,KT> is(KT value){
 			this.value = value;
+			this.define = KeyValueDefine.DEFAULT;
+			return builder.chain(this);
+		}
+		public KeyBuilder<BT,KT> max(){
+			this.value = null;
+			this.define = KeyValueDefine.MAX;
+			return builder.chain(this);
+		}
+		public KeyBuilder<BT,KT> min(){
+			this.value = null;
+			this.define = KeyValueDefine.MIN;
 			return builder.chain(this);
 		}
 	}

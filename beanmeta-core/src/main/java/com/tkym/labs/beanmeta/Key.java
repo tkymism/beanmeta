@@ -91,6 +91,16 @@ public class Key<BT,KT> implements Comparable<Key<?,?>>{
 	public int compareTo(Key<?, ?> o) {
 		return COMPARATOR.compare(this, o);
 	}
+	static class MaxKeyValue<BT,KT> extends Key<BT, KT>{
+		MaxKeyValue(Key<?, ?> parent, BeanMeta<BT, KT> beanMeta) {
+			super(parent, beanMeta, null);
+		}
+	}
+	static class MinKeyValue<BT,KT> extends Key<BT, KT>{
+		MinKeyValue(Key<?, ?> parent, BeanMeta<BT, KT> beanMeta) {
+			super(parent, beanMeta, null);
+		}
+	}
 	private static Comparator<Key<?,?>> COMPARATOR = new Comparator<Key<?,?>>() {
 		@Override
 		public int compare(Key<?, ?> o1, Key<?, ?> o2) {
@@ -98,9 +108,23 @@ public class Key<BT,KT> implements Comparable<Key<?,?>>{
 				int parent = compare(o1.getParent(), o2.getParent());
 				if (parent != 0) return parent;
 			}
+			int ret = compareType(o1, o2);
+			if (ret != 0) return ret;
 			return compareValue(o1, o2);
 		}
-		
+		int compareType(Key<?,?> o1, Key<?,?> o2){
+			int t1 = typeCompareValue(o1.getClass());
+			int t2 = typeCompareValue(o2.getClass());
+			int compare = t2-t1;
+			if (compare == 0) return 0;
+			else if (compare > 0) return -1;
+			else return 1;
+		}
+		<T extends Key<?,?>> int typeCompareValue(Class<T> type){
+			if (type.equals(MinKeyValue.class)) return -1;
+			else if (type.equals(MaxKeyValue.class)) return 1;
+			else return 0;
+		}
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		int compareValue(Key<?,?> o1, Key<?,?> o2){
 			Class<?> c1 = o1.getBeanMeta().getKeyPropertyMeta().getPropertyType();
@@ -117,7 +141,8 @@ public class Key<BT,KT> implements Comparable<Key<?,?>>{
 						" key2="+c2.getName());
 			if (o1.value() == null && o2.value() != null) return -1;
 			else if (o1.value() != null && o2.value() == null) return 1;
-			return ((Comparable) o1.value).compareTo(o2.value);
+			else if (o1.value() == null && o2.value() == null) return 0;
+			else return ((Comparable) o1.value).compareTo(o2.value);
 		}
 	};
 }

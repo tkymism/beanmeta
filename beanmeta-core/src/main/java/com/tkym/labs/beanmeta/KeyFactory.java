@@ -5,6 +5,22 @@ class KeyFactory<BT,KT> {
 	KeyFactory(BeanMeta<BT, KT> beanMeta){
 		this.beanMeta = beanMeta;
 	}
+	Key<BT, KT> min(){
+		return min(null);
+	}
+	Key<BT, KT> min(Key<?,?> parent){
+		if (parent != null)
+			checkParentBeanMeta(parent);
+		return new Key.MinKeyValue<BT,KT>(parent, beanMeta);
+	}
+	Key<BT, KT> max(){
+		return max(null);
+	}
+	Key<BT, KT> max(Key<?,?> parent){
+		if (parent != null)
+			checkParentBeanMeta(parent);
+		return new Key.MaxKeyValue<BT,KT>(parent, beanMeta);
+	}
 	Key<BT, KT> create(Key<?,?> parent, KT value){
 		if (parent != null)
 			checkParentBeanMeta(parent);
