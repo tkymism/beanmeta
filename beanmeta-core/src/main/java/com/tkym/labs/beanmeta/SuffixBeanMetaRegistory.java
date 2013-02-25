@@ -3,21 +3,26 @@ package com.tkym.labs.beanmeta;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SuffixBeanMetaMapRegister {
-	private static final SuffixBeanMetaMapRegister singleton = 
-			new SuffixBeanMetaMapRegister();
+public class SuffixBeanMetaRegistory {
+	private static final SuffixBeanMetaRegistory singleton = 
+			new SuffixBeanMetaRegistory();
 	private Map<Class<?>, SuffixBeanMetaMap<?,?>> suffixMetaMap;
-	private SuffixBeanMetaMapRegister(){
+	private SuffixBeanMetaRegistory(){
 		this.suffixMetaMap = 
 				new ConcurrentHashMap<Class<?>, SuffixBeanMetaMap<?,?>>();
 	}
 	
-	public static SuffixBeanMetaMapRegister getInstance(){
+	public static SuffixBeanMetaRegistory get(){
 		return singleton;
 	}
-	
+	int size() {
+		return suffixMetaMap.size();
+	}
+	<BT> boolean contain(Class<BT> beanType){
+		return suffixMetaMap.containsKey(beanType);
+	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public <BT,KT> SuffixBeanMetaMap<BT,KT> register(BeanMeta<BT, KT> beanMeta){
+	<BT,KT> SuffixBeanMetaMap<BT,KT> register(BeanMeta<BT, KT> beanMeta){
 		SuffixBeanMetaMap<BT,KT> create = new SuffixBeanMetaMap(beanMeta);
 		suffixMetaMap.put(beanMeta.getBeanType(), create);
 		return create;

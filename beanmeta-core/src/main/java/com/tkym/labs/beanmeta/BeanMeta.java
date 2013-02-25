@@ -2,8 +2,6 @@ package com.tkym.labs.beanmeta;
 
 import java.util.Set;
 
-
-
 public interface BeanMeta<BT,KT>{
 	public Key<BT,KT> key(Key<?,?>parent,  KT value);
 	public String getName();

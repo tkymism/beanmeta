@@ -6,8 +6,8 @@ public abstract class AbstractSuffixBeanMeta<BT,KT> extends AbstractBeanMeta<BT,
 	protected AbstractSuffixBeanMeta(String name, Class<BT> beanType) {
 		super(name, beanType);
 		instanceMap = 
-				SuffixBeanMetaMapRegister.
-				getInstance().
+				SuffixBeanMetaRegistory.
+				get().
 				register(this);
 	}
 	public SuffixBeanMeta<BT, KT> suffix(String suffix){

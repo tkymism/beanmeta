@@ -25,4 +25,17 @@ public class SuffixBeanMetaMap<BT,KT>{
 	public void register(String... suffix){
 		for (String sfx : suffix) create(sfx);
 	}
+	boolean contain(String suffix){
+		return instanceMap.containsKey(suffix);
+	}
+	void remove(String suffix){
+		if (instanceMap.containsKey(suffix))
+			instanceMap.remove(suffix);
+	}
+	public void unregister(String... suffix){
+		for (String sfx : suffix)  remove(sfx);
+	}
+	int size(){
+		return instanceMap.size();
+	}
 }

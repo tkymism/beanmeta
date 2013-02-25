@@ -17,7 +17,6 @@ public class BeanMetaTest {
 	private static Map<Key<Person,Long>, Person> PERSON_MAP;
 	private static Map<Key<Account,String>, Account> ACCOUNT_MAP;
 	private static Map<Key<Bill,Integer>, Bill> BILL_MAP;
-
 	@Test
 	public void testBeanMetaCase001(){
 		PERSON_MAP = new HashMap<Key<Person,Long>, Person>();
