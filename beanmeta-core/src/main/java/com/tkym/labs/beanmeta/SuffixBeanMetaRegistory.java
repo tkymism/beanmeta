@@ -7,11 +7,11 @@ public class SuffixBeanMetaRegistory {
 	private static final SuffixBeanMetaRegistory singleton = 
 			new SuffixBeanMetaRegistory();
 	private Map<Class<?>, SuffixBeanMetaMap<?,?>> suffixMetaMap;
+	private boolean autoGenerateSuffix = true;
 	private SuffixBeanMetaRegistory(){
 		this.suffixMetaMap = 
 				new ConcurrentHashMap<Class<?>, SuffixBeanMetaMap<?,?>>();
 	}
-	
 	public static SuffixBeanMetaRegistory get(){
 		return singleton;
 	}
@@ -34,5 +34,11 @@ public class SuffixBeanMetaRegistory {
 	@SuppressWarnings("unchecked")
 	public <BT,KT> SuffixBeanMetaMap<BT,KT> type(Class<BT> cls){
 		return (SuffixBeanMetaMap<BT,KT>) suffixMetaMap.get(cls);
+	}
+	public void setAutoGenerateSuffix(boolean autoCreateSuffix){
+		this.autoGenerateSuffix = autoCreateSuffix;
+	}
+	public boolean isAutoGenerateSuffix(){
+		return this.autoGenerateSuffix;
 	}
 }

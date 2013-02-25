@@ -17,7 +17,7 @@ public class SuffixedBeanMetaTest {
 		assertThat(registory.size(), is(0));
 		GenerationMeta geneMeta = GenerationMeta.get();
 		assertThat(registory.size(), is(1));
-		geneMeta.suffix("aaa");
+		geneMeta.s("aaa");
 	}
 	@Test
 	public void testSuffixedBeanMetaCase002(){
@@ -28,8 +28,8 @@ public class SuffixedBeanMetaTest {
 		assertThat(registory.meta(GENERATION).size(), is(2));
 		assertTrue(registory.meta(GENERATION).contain("aaa"));
 		assertTrue(registory.meta(GENERATION).contain("bbb"));
-		SuffixBeanMeta<Generation, Integer> aaaMeta = GENERATION.suffix("aaa");
-		SuffixBeanMeta<Generation, Integer> bbbMeta = GENERATION.suffix("bbb");
+		SuffixBeanMeta<Generation, Integer> aaaMeta = GENERATION.s("aaa");
+		SuffixBeanMeta<Generation, Integer> bbbMeta = GENERATION.s("bbb");
 		assertFalse(aaaMeta.equals(bbbMeta));
 		registory.meta(GENERATION).unregister("aaa","bbb");
 		assertThat(registory.meta(GENERATION).size(), is(0));

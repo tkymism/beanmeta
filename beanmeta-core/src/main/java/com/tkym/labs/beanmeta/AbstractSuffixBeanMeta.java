@@ -10,7 +10,7 @@ public abstract class AbstractSuffixBeanMeta<BT,KT> extends AbstractBeanMeta<BT,
 				get().
 				register(this);
 	}
-	public SuffixBeanMeta<BT, KT> suffix(String suffix){
+	public SuffixBeanMeta<BT, KT> s(String suffix){
 		return instanceMap.get(suffix);
 	}
 }
