@@ -11,7 +11,7 @@ import com.tkym.labs.beans.Generation;
 import com.tkym.labs.beans.GenerationMeta;
 
 public class SuffixedBeanMetaTest {
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testSuffixedBeanMetaCase001(){
 		SuffixBeanMetaRegistory registory = SuffixBeanMetaRegistory.get(); 
 		assertThat(registory.size(), is(0));
