@@ -60,6 +60,9 @@ public class BeanMetaUtils {
 			for(String name : meta.getPropertyNames())
 				meta(meta.getPropertyMeta(name)).copy(source, target);
 		}
+		public BeanMetaComparatorBuilder<BT, KT> comparator(){
+			return new BeanMetaComparatorBuilder<BT,KT>(this.meta.getKeyPropertyMeta());
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -97,13 +100,20 @@ public class BeanMetaUtils {
 		}
 		
 		public Comparator<BT> comparator() {
-			return new Comparator<BT>() {
-				@Override
-				public int compare(BT o1, BT o2) {
-					return this.compare(o1, o2);
-				}
-			};
+			return new PropertyMetaComparator<BT,PT>(this);
 		}
+	}
+	
+	private class PropertyMetaComparator<BT,PT> implements Comparator<BT>{
+		private final PropertyMetaUtils<BT,PT> propertyMetaUtils;
+		PropertyMetaComparator(PropertyMetaUtils<BT,PT> propertyMetaUtils){
+			this.propertyMetaUtils = propertyMetaUtils;
+		}
+		@Override
+		public int compare(BT o1, BT o2) {
+			return this.propertyMetaUtils.compare(o1, o2);
+		}
+		
 	}
 	
 	@SuppressWarnings("unchecked")

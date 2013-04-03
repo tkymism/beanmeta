@@ -12,12 +12,17 @@ Beanmeta framework is a utility of java-bean.
 
 ## Usage
 
-### Define Annotation to Bean
+
+
+### Define Annotation
 
 ```
 @SuppressWarnings("serial")
+@Model(parent=Person.class)
 public class Account implements Serializable{
-  private String email;
+	@Key
+	private String email;
+	@Attribute
 	private String address;
 	public String getEmail() {
 		return email;

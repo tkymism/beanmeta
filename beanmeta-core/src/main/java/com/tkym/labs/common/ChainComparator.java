@@ -1,4 +1,4 @@
-package com.tkym.labs.beanmeta;
+package com.tkym.labs.common;
 
 import java.util.Comparator;
 
@@ -9,9 +9,9 @@ import java.util.Comparator;
  *  Comparator<T> compA;
  *  Comparator<T> compB;
  * 	ChainComparator.
- * 		chain(compA).
- * 		chain(compB).
- * 		build().
+ * 		asc(compA).
+ * 		asc(compB).
+ * 		chain().
  * 		compare(x, y);
  * </pre>
  * @author takayama
@@ -20,9 +20,6 @@ import java.util.Comparator;
 public class ChainComparator<T> implements Comparator<T>{
 	private final Comparator<T> current;
 	private Comparator<T> parent;
-	public static <T> ChainComparator.ChainComparatorBuilder<T> chain(Comparator<T> comparator){
-		return new ChainComparator.ChainComparatorBuilder<T>(comparator);
-	}
 	private ChainComparator(Comparator<T> current){
 		this(null, current);
 	}
@@ -45,30 +42,48 @@ public class ChainComparator<T> implements Comparator<T>{
 			ret = current.compare(o1, o2);
 		return ret;
 	}
+	public static <T> ChainComparator.ChainComparatorBuilder<T> root(){
+		return new ChainComparator.ChainComparatorBuilder<T>();
+	}
+	public static <T> ChainComparator.ChainComparatorBuilder<T> asc(Comparator<T> comparator){
+		return new ChainComparator.ChainComparatorBuilder<T>(comparator);
+	}
+	public static <T> ChainComparator.ChainComparatorBuilder<T> desc(Comparator<T> comparator){
+		return asc(reverse(comparator));
+	}
+	public ChainComparator<T> chain(Comparator<T> comparator){
+		return new ChainComparator<T>(this, comparator);
+	}
 	public static class ChainComparatorBuilder<T>{
 		private ChainComparator<T> comparator;
+		private ChainComparatorBuilder(){
+			this.comparator = null;
+		}
 		private ChainComparatorBuilder(Comparator<T> comparator){
 			this.comparator = new ChainComparator<T>(null, comparator);
 		}
-		public ChainComparatorBuilder<T> chain(Comparator<T> child){
-			return chain(child, false);
+		public ChainComparatorBuilder<T> asc(Comparator<T> child){
+			return buildChain(child, false);
 		}
-		public ChainComparatorBuilder<T> chainR(Comparator<T> child){
-			return chain(child, true);
+		public ChainComparatorBuilder<T> desc(Comparator<T> child){
+			return buildChain(child, true);
 		}
-		ChainComparatorBuilder<T> chain(Comparator<T> child, boolean reverse){
+		ChainComparatorBuilder<T> buildChain(Comparator<T> child, boolean reverse){
 			this.comparator = create(this.comparator, child, reverse);
 			return this;
 		}
 		private ChainComparator<T> create(ChainComparator<T> parent, Comparator<T> child, boolean reverse){
 			Comparator<T> comparator;
-			if (reverse) comparator = new ReverseComparator<T>(child);
+			if (reverse) comparator = reverse(child);
 			else comparator = child;
 			return new ChainComparator<T>(parent, comparator);
 		}
-		public ChainComparator<T> build(){
+		public ChainComparator<T> chain(){
 			return comparator;
 		}
+	}
+	public static <T> ReverseComparator<T> reverse(Comparator<T> comparator){
+		return new ReverseComparator<T>(comparator);
 	}
 	static class ReverseComparator<T> implements Comparator<T>{
 		private final Comparator<T> current;
