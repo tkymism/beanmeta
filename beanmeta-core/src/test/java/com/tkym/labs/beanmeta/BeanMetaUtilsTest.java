@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.tkym.labs.beans.Person;
 import com.tkym.labs.beans.PersonMeta;
 
-public class BeanstoreUtilsTest {
+public class BeanMetaUtilsTest {
 	Person person(long id, String name){
 		Person bean = new Person();
 		bean.setId(id);
@@ -21,7 +21,7 @@ public class BeanstoreUtilsTest {
 	public void testCompareCase001(){
 		Person b1 = person(1L,"foo1");
 		Person b2 = person(2L,"foo2");
-		int actual = BeanMetaUtils.get().meta(PersonMeta.get().id).compare(b1, b2);
+		int actual = BeanMetaUtils.get().beanComparator(PersonMeta.get().id).compare(b1, b2);
 		Assert.assertThat(actual, CoreMatchers.is(-1));
 	}
 
@@ -29,7 +29,7 @@ public class BeanstoreUtilsTest {
 	public void testCompareCase002(){
 		Person b1 = person(2L,"foo2");
 		Person b2 = person(1L,"foo1");
-		int actual = BeanMetaUtils.get().meta(PersonMeta.get().id).compare(b1, b2);
+		int actual = BeanMetaUtils.get().beanComparator(PersonMeta.get().id).compare(b1, b2);
 		Assert.assertThat(actual, CoreMatchers.is(1));
 	}
 
@@ -37,7 +37,7 @@ public class BeanstoreUtilsTest {
 	public void testCompareCase003(){
 		Person b1 = person(1L,"foo2");
 		Person b2 = person(1L,"foo1");
-		int actual = BeanMetaUtils.get().meta(PersonMeta.get().id).compare(b1, b2);
+		int actual = BeanMetaUtils.get().beanComparator(PersonMeta.get().id).compare(b1, b2);
 		Assert.assertThat(actual, CoreMatchers.is(0));
 	}
 
@@ -45,7 +45,7 @@ public class BeanstoreUtilsTest {
 	public void testCompareCase011(){
 		Person b1 = person(1L,"foo1");
 		Person b2 = person(2L,"foo2");
-		int actual = BeanMetaUtils.get().meta(PersonMeta.get().name).compare(b1, b2);
+		int actual = BeanMetaUtils.get().beanComparator(PersonMeta.get().name).compare(b1, b2);
 		Assert.assertThat(actual, CoreMatchers.is(-1));
 	}
 	
@@ -53,7 +53,7 @@ public class BeanstoreUtilsTest {
 	public void testCompareCase012(){
 		Person b1 = person(1L,"foo2");
 		Person b2 = person(1L,"foo1");
-		int actual = BeanMetaUtils.get().meta(PersonMeta.get().name).compare(b1, b2);
+		int actual = BeanMetaUtils.get().beanComparator(PersonMeta.get().name).compare(b1, b2);
 		Assert.assertThat(actual, CoreMatchers.is(1));
 	}
 	
@@ -61,7 +61,7 @@ public class BeanstoreUtilsTest {
 	public void testCompareCase013(){
 		Person b1 = person(1L,"foo2");
 		Person b2 = person(2L,"foo2");
-		int actual = BeanMetaUtils.get().meta(PersonMeta.get().name).compare(b1, b2);
+		int actual = BeanMetaUtils.get().beanComparator(PersonMeta.get().name).compare(b1, b2);
 		Assert.assertThat(actual, CoreMatchers.is(0));
 	}
 

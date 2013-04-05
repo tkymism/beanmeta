@@ -2,6 +2,7 @@ package com.tkym.labs.beanmeta;
 
 import static com.tkym.labs.common.ChainComparator.asc;
 import static com.tkym.labs.common.ChainComparator.desc;
+import static junit.framework.Assert.assertNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -46,7 +47,7 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testPropertyMetaComparator(){
 		int actual = 
-				BeanMetaUtils.get().meta(PERSON.name).comparator().
+				BeanMetaUtils.get().beanComparator(PERSON.name).
 				compare(p(1L, "aaa"), p(1L,"aab"));
 		assertThat(actual, is(-1));
 	}
@@ -54,8 +55,8 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testChainComparatorCase_lessThan(){
 		int actual = 
-				asc(BeanMetaUtils.get().meta(PERSON.name).comparator()).
-				asc(BeanMetaUtils.get().meta(PERSON.id).comparator()).
+				asc(BeanMetaUtils.get().beanComparator(PERSON.name)).
+				asc(BeanMetaUtils.get().beanComparator(PERSON.id)).
 				chain().
 				compare(p(1L, "aaa"), p(1L,"aab"));
 		assertThat(actual, is(-1));
@@ -64,8 +65,8 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testChainComparatorCase_equal(){
 		int actual = 
-				asc(BeanMetaUtils.get().meta(PERSON.name).comparator()).
-				asc(BeanMetaUtils.get().meta(PERSON.id).comparator()).
+				asc(BeanMetaUtils.get().beanComparator(PERSON.name)).
+				asc(BeanMetaUtils.get().beanComparator(PERSON.id)).
 				chain().
 				compare(p(1L, "aaa"), p(1L,"aaa"));
 		assertThat(actual, is(0));
@@ -74,8 +75,8 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testChainComparator_Case_greaterThan(){
 		int actual = 
-				asc(BeanMetaUtils.get().meta(PERSON.name).comparator()).
-				asc(BeanMetaUtils.get().meta(PERSON.id).comparator()).
+				asc(BeanMetaUtils.get().beanComparator(PERSON.name)).
+				asc(BeanMetaUtils.get().beanComparator(PERSON.id)).
 				chain().
 				compare(p(1L, "aab"), p(1L,"aaa"));
 		assertThat(actual, is(1));
@@ -84,8 +85,8 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testTreeSet_asc_Case001(){
 		TreeSet<Person> treeSet = new TreeSet<Person>(
-					asc(BeanMetaUtils.get().meta(PERSON.name).comparator()).
-					asc(BeanMetaUtils.get().meta(PERSON.id).comparator()).
+					asc(BeanMetaUtils.get().beanComparator(PERSON.name)).
+					asc(BeanMetaUtils.get().beanComparator(PERSON.id)).
 					chain()
 				);
 		
@@ -114,8 +115,8 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testTreeSet_asc_Case002(){
 		TreeSet<Person> treeSet = new TreeSet<Person>(
-					asc(BeanMetaUtils.get().meta(PERSON.name).comparator()).
-					asc(BeanMetaUtils.get().meta(PERSON.id).comparator()).
+					asc(BeanMetaUtils.get().beanComparator(PERSON.name)).
+					asc(BeanMetaUtils.get().beanComparator(PERSON.id)).
 					chain()
 				);
 		
@@ -140,8 +141,8 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testTreeSet_asc_Case003(){
 		TreeSet<Person> treeSet = new TreeSet<Person>(
-					asc(BeanMetaUtils.get().meta(PERSON.name).comparator()).
-					asc(BeanMetaUtils.get().meta(PERSON.id).comparator()).
+					asc(BeanMetaUtils.get().beanComparator(PERSON.name)).
+					asc(BeanMetaUtils.get().beanComparator(PERSON.id)).
 					chain()
 				);
 		
@@ -170,8 +171,8 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testTreeSet_desc_Case001(){
 		TreeSet<Person> treeSet = new TreeSet<Person>(
-					desc(BeanMetaUtils.get().meta(PERSON.name).comparator()).
-					desc(BeanMetaUtils.get().meta(PERSON.id).comparator()).
+					desc(BeanMetaUtils.get().beanComparator(PERSON.name)).
+					desc(BeanMetaUtils.get().beanComparator(PERSON.id)).
 					chain()
 				);
 		
@@ -204,8 +205,8 @@ public class BeanMetaComparatorTest {
 	@Test
 	public void testTreeSet_desc_Case002(){
 		TreeSet<Person> treeSet = new TreeSet<Person>(
-					desc(BeanMetaUtils.get().meta(PERSON.name).comparator()).
-					asc(BeanMetaUtils.get().meta(PERSON.id).comparator()).
+					desc(BeanMetaUtils.get().beanComparator(PERSON.name)).
+					asc(BeanMetaUtils.get().beanComparator(PERSON.id)).
 					chain()
 				);
 		
@@ -240,7 +241,7 @@ public class BeanMetaComparatorTest {
 		int actual = 
 				builder(PERSON).
 				asc(PERSON.name).
-				chainAscKey().
+				ascKey().chain().
 				compare(p(1L, "aaa"), p(1L,"aab"));
 		assertThat(actual, is(-1));
 	}
@@ -250,7 +251,7 @@ public class BeanMetaComparatorTest {
 		int actual = 
 				builder(PERSON).
 				asc(PERSON.name).
-				chainAscKey().
+				ascKey().chain().
 				compare(p(1L, "aaa"), p(1L,"aaa"));
 		assertThat(actual, is(0));
 	}
@@ -260,7 +261,7 @@ public class BeanMetaComparatorTest {
 		int actual = 
 				builder(PERSON).
 				asc(PERSON.name).
-				chainAscKey().
+				ascKey().chain().
 				compare(p(1L, "aab"), p(1L,"aaa"));
 		assertThat(actual, is(1));
 	}
@@ -270,7 +271,7 @@ public class BeanMetaComparatorTest {
 		TreeSet<Person> treeSet = new TreeSet<Person>(
 					builder(PERSON).
 					desc(PERSON.name).
-					chainAscKey()
+					ascKey().chain()
 				);
 		
 		treeSet.add(p(1L,"aaa"));
@@ -304,7 +305,7 @@ public class BeanMetaComparatorTest {
 		TreeSet<Person> treeSet = new TreeSet<Person>(
 					builder(PERSON).
 					asc(PERSON.name).
-					chainAscKey()
+					ascKey().chain()
 				);
 		
 		treeSet.add(p(1L,"aaa"));
@@ -329,6 +330,94 @@ public class BeanMetaComparatorTest {
  		assertThat(p.getName(), is("aab"));
 	}
 
+	@Test
+	public void testBeanMetaComparator_CaseAscNullFirst(){
+		TreeSet<Person> treeSet = new TreeSet<Person>(
+					builder(PERSON).
+					ascNullFirst(PERSON.name).
+					ascKey().chain()
+				);
+		
+		treeSet.add(p(2L,"a"));
+		treeSet.add(p(2L,null));
+		treeSet.add(p(2L,"b"));
+		treeSet.add(p(1L,"b"));
+		treeSet.add(p(1L,null));
+		treeSet.add(p(1L,"a"));
+		
+		assertThat(treeSet.size(), is(6));
+		Iterator<Person> ite = treeSet.iterator();
+		Person p;
+		
+		p = ite.next();
+ 		assertThat(p.getId(), is(1L));
+ 		assertNull(p.getName());
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(2L));
+ 		assertNull(p.getName());
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(1L));
+ 		assertThat(p.getName(), is("a"));
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(2L));
+ 		assertThat(p.getName(), is("a"));
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(1L));
+ 		assertThat(p.getName(), is("b"));
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(2L));
+ 		assertThat(p.getName(), is("b"));
+	}
+	
+	@Test
+	public void testBeanMetaComparator_CaseAscNullLast(){
+		TreeSet<Person> treeSet = new TreeSet<Person>(
+					builder(PERSON).
+					ascNullLast(PERSON.name).
+					ascKey().chain()
+				);
+		
+		treeSet.add(p(2L,"a"));
+		treeSet.add(p(2L,null));
+		treeSet.add(p(2L,"b"));
+		treeSet.add(p(1L,"b"));
+		treeSet.add(p(1L,null));
+		treeSet.add(p(1L,"a"));
+		
+		assertThat(treeSet.size(), is(6));
+		Iterator<Person> ite = treeSet.iterator();
+		Person p;
+		
+		p = ite.next();
+ 		assertThat(p.getId(), is(1L));
+ 		assertThat(p.getName(), is("a"));
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(2L));
+ 		assertThat(p.getName(), is("a"));
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(1L));
+ 		assertThat(p.getName(), is("b"));
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(2L));
+ 		assertThat(p.getName(), is("b"));
+
+		p = ite.next();
+ 		assertThat(p.getId(), is(1L));
+ 		assertNull(p.getName());
+ 		
+		p = ite.next();
+ 		assertThat(p.getId(), is(2L));
+ 		assertNull(p.getName());
+	}
+	
 	static TreeSet<Person> treesetForPerformance;
 	
 	@Test
@@ -336,7 +425,7 @@ public class BeanMetaComparatorTest {
 		treesetForPerformance = new TreeSet<Person>(
 				builder(PERSON).
 				asc(PERSON.name).
-				chainAscKey()
+				ascKey().chain()
 			); 
 		for (Person p : PERSON_LIST)
 			treesetForPerformance.add(p);
@@ -356,7 +445,7 @@ public class BeanMetaComparatorTest {
 		assertThat(p.getName(), is(createName(9999)));
 	}
 	
-	public static <BT,KT> BeanMetaComparatorBuilder<BT,KT> builder(BeanMeta<BT,KT> beanMeta){
-		return BeanMetaUtils.get().meta(beanMeta).comparator();
+	public static <BT,KT extends Comparable<KT>> BeanMetaComparatorBuilder<BT,KT> builder(BeanMeta<BT,KT> beanMeta){
+		return BeanMetaUtils.get().comparatorBulder(beanMeta);
 	}
 }

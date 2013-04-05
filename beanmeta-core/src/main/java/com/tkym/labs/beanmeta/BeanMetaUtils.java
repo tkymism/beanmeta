@@ -26,6 +26,22 @@ public class BeanMetaUtils {
 		return new PropertyMetaUtils<B, P>(meta);
 	}
 	
+	public <B,P extends Comparable<P>> PropertyMetaComparator<B,P> propertyComparator(PropertyMeta<B,P> meta){
+		return new PropertyMetaComparator<B, P>(meta);
+	}
+	
+	public <B,P extends Comparable<P>> PropertyMetaComparatorForBean<B,P> beanComparator(PropertyMeta<B,P> meta){
+		return new PropertyMetaComparatorForBean<B, P>(meta);
+	}
+	
+//	public <B,P extends Comparable<P>> PropertyMetaComparatorForBean<B,P> beanComparator(PropertyMeta<B,P> meta){
+//		return new PropertyMetaComparatorForBean<B, P>(meta);
+//	}
+	
+	public <B,K extends Comparable<K>> BeanMetaComparatorBuilder<B, K> comparatorBulder(BeanMeta<B,K> meta){
+		return new BeanMetaComparatorBuilder<B,K>(meta.getKeyPropertyMeta());
+	}
+	
 	public <B> boolean equalsKey(B b1, B b2){
 		@SuppressWarnings("unchecked")
 		BeanMeta<B, ?> meta = (BeanMeta<B, ?>) getFromMap(b1.getClass());
@@ -60,12 +76,8 @@ public class BeanMetaUtils {
 			for(String name : meta.getPropertyNames())
 				meta(meta.getPropertyMeta(name)).copy(source, target);
 		}
-		public BeanMetaComparatorBuilder<BT, KT> comparator(){
-			return new BeanMetaComparatorBuilder<BT,KT>(this.meta.getKeyPropertyMeta());
-		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public class PropertyMetaUtils<BT,PT>{
 		private PropertyMeta<BT,PT> meta;
 		private PropertyMetaUtils(PropertyMeta<BT,PT> propertyMeta){
@@ -84,36 +96,87 @@ public class BeanMetaUtils {
 			else if (p1 == null && p2 != null) return false;
 			else return p1.equals(p2);
 		}
-		
-		public int compare(BT b1, BT b2){
-			PT p1 = meta.access(b1).get();
-			PT p2 = meta.access(b2).get();
-			if (p1 == null)
-				throw new IllegalArgumentException(
-						"["+meta.getBeanType().getName()+"#"+meta.getPropertyName()+"]"+" of b1 is Null.");
-			if (p1 instanceof Comparable)
-				return ((Comparable<PT>)p1).compareTo(p2);
-			else 
-				throw new IllegalArgumentException(
-						meta.getPropertyType().getName()+" is not Comparable "+
-						"["+meta.getBeanType().getName()+"#"+meta.getPropertyName()+"]");
-		}
-		
-		public Comparator<BT> comparator() {
-			return new PropertyMetaComparator<BT,PT>(this);
-		}
 	}
-	
-	private class PropertyMetaComparator<BT,PT> implements Comparator<BT>{
-		private final PropertyMetaUtils<BT,PT> propertyMetaUtils;
-		PropertyMetaComparator(PropertyMetaUtils<BT,PT> propertyMetaUtils){
-			this.propertyMetaUtils = propertyMetaUtils;
+	public static class PropertyMetaComparatorForBean<BT,PT extends Comparable<PT>> implements Comparator<BT>{
+		private final PropertyMetaComparator<BT,PT> comparator;
+		private final PropertyMeta<BT,PT> meta;
+		PropertyMetaComparatorForBean(PropertyMeta<BT,PT> meta){
+			this(meta, BehaveNull.NULL_ERROR);
+		}
+		PropertyMetaComparatorForBean(PropertyMeta<BT,PT> meta, BehaveNull behaveNull){
+			comparator = new PropertyMetaComparator<BT,PT>(meta, behaveNull); 
+			this.meta = meta;
 		}
 		@Override
-		public int compare(BT o1, BT o2) {
-			return this.propertyMetaUtils.compare(o1, o2);
+		public int compare(BT b1, BT b2) {
+			PT p1 = meta.access(b1).get();
+			PT p2 = meta.access(b2).get();
+			return comparator.compare(p1, p2);
 		}
-		
+		public PropertyMetaComparatorForBean<BT,PT> nullFirst(){
+			comparator.nullFirst();
+			return this;
+		}
+		public PropertyMetaComparatorForBean<BT,PT> nullLast(){
+			comparator.nullLast();
+			return this;
+		}
+		public PropertyMetaComparatorForBean<BT,PT> nullError(){
+			comparator.nullError();
+			return this;
+		}
+	}
+	public static enum BehaveNull{
+		NULL_FIRST,NULL_LAST,NULL_ERROR,
+	}
+	public static class PropertyMetaComparator<BT,PT extends Comparable<PT>> implements Comparator<PT>{
+		private PropertyMeta<BT,PT> meta;
+		private BehaveNull behaveNull; 
+		PropertyMetaComparator(PropertyMeta<BT,PT> meta, BehaveNull behaveNull){
+			this.behaveNull = behaveNull;
+			this.meta = meta;
+		}
+		PropertyMetaComparator(PropertyMeta<BT,PT> meta){
+			this(meta, BehaveNull.NULL_ERROR);
+		}
+		public PropertyMetaComparator<BT,PT> nullFirst(){
+			this.behaveNull = BehaveNull.NULL_FIRST;
+			return this;
+		}
+		public PropertyMetaComparator<BT,PT> nullLast(){
+			this.behaveNull = BehaveNull.NULL_LAST;
+			return this;
+		}
+		public PropertyMetaComparator<BT,PT> nullError(){
+			this.behaveNull = BehaveNull.NULL_ERROR;
+			return this;
+		}
+		@Override
+		public int compare(PT p1, PT p2){
+			int n1 = ensureNull(p1, 1);
+			int n2 = ensureNull(p2, 2);
+			if (n1 == 0 && n2 == 0) 		// not null.
+				return p1.compareTo(p2);	
+			else {							// contains null
+				if (n1 > n2) return 1;
+				else if (n1 < n2) return -1;
+				else return 0;
+			}
+		}
+		private int ensureNull(PT p, int num){
+			if (p != null) return 0;
+			switch(behaveNull){
+				case NULL_ERROR: 
+					throw new IllegalArgumentException(
+							"["+meta.getBeanType().getName()+"#"+meta.getPropertyName()+"]"+" of b"+num+" is Null.");
+				case NULL_FIRST: 
+					return -1;
+				case NULL_LAST: 
+					return 1;
+				default:
+					throw new IllegalAccessError("behaveNull is Illegal:"+behaveNull);
+			}
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
