@@ -13,9 +13,14 @@ import java.util.Set;
 public abstract class AbstractBeanMeta<BT, KT> implements BeanMeta<BT, KT>{
 	private final Class<BT> beanType;
 	private final String name;
+	private final String namespace;
 	private final Map<String,PropertyMeta<BT, ?>> propertiesMap = new LinkedHashMap<String,PropertyMeta<BT, ?>>();
 	protected AbstractBeanMeta(String name, Class<BT> beanType){
+		this(null, name, beanType);
+	}
+	protected AbstractBeanMeta(String namespace, String name, Class<BT> beanType){
 		this.name = name;
+		this.namespace = namespace;
 		this.beanType = beanType;
 		BeanMetaUtils.get().register(beanType, this);
 	}
@@ -24,6 +29,10 @@ public abstract class AbstractBeanMeta<BT, KT> implements BeanMeta<BT, KT>{
 	}
 	protected <PT> PropertyMetaBuilderAsArray<BT, PT> arrays(String propertyName, Class<PT> propertyType){
 		return new PropertyMetaBuilderAsArray<BT, PT>(beanType, propertyName, propertyType, propertiesMap);
+	}
+	@Override
+	public String getNamespace() {
+		return namespace;
 	}
 	@Override
 	public String getName(){

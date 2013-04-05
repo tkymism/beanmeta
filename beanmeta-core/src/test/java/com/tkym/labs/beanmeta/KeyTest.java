@@ -81,7 +81,7 @@ public class KeyTest {
 		PersonMeta PERSON = PersonMeta.get();
 		Key<Person, Long> current = PERSON.key(null, 0L);
 		for (long i=1L; i<100; i++)
-			assertThat(current.compareTo(PERSON.key(null, i)), is(-1));
+			assertThat(KeyComparator.comparator(PERSON).compare(current, PERSON.key(null, i)), is(-1));
 	}
 	
 	@Test
@@ -89,14 +89,14 @@ public class KeyTest {
 		PersonMeta PERSON = PersonMeta.get();
 		Key<Person, Long> current = PERSON.key(null, 100L);
 		for (long i=0L; i<99; i++)
-			assertThat(current.compareTo(PERSON.key(null, i)), is(1));
+			assertThat(KeyComparator.comparator(PERSON).compare(current, PERSON.key(null, i)), is(1));
 	}
 	@Test
 	public void testCompareTo_Case003(){
 		PersonMeta PERSON = PersonMeta.get();
 		Key<Person, Long> current = PERSON.key(null, null);
 		for (long i=0L; i<99; i++)
-			assertThat(current.compareTo(PERSON.key(null, i)), is(-1));
+			assertThat(KeyComparator.comparator(PERSON).compare(current, PERSON.key(null, i)), is(-1));
 	}
 	
 	@Test
@@ -160,13 +160,14 @@ public class KeyTest {
 					build();
 		for (long i=1L; i<10; i++)
 			for (int j=0; j<10; j++)
-				assertThat(current.
-						compareTo(
+				assertThat(
+						KeyComparator.comparator(ACCOUNT).compare(
+								current,
 								KeyBuilder.root().
-									meta(PERSON).is(i).
-									meta(ACCOUNT).is("a"+format000.format(j)+"@email.com").
-									build()
-								),
+								meta(PERSON).is(i).
+								meta(ACCOUNT).is("a"+format000.format(j)+"@email.com").
+								build()
+								), 
 							is(-1));
 	}
 	
@@ -189,9 +190,15 @@ public class KeyTest {
 				KeyBuilder.root().
 				meta(PERSON).min().
 				build();
-		assertThat(keyP3.compareTo(keyP4), is(-1));
-		assertThat(keyP3.compareTo(keyPMax), is(-1));
-		assertThat(keyP3.compareTo(keyPMin), is(1));
+		assertThat(
+				KeyComparator.comparator(PERSON).compare(keyP3,keyP4),
+				is(-1));
+		assertThat(
+				KeyComparator.comparator(PERSON).compare(keyP3,keyPMax),
+				is(-1));
+		assertThat(
+				KeyComparator.comparator(PERSON).compare(keyP3,keyPMin),
+				is(1));
 		AccountMeta ACCOUNT = AccountMeta.get();
 		Key<Account, String> keyA31 = 
 				KeyBuilder.parent(keyP3).
@@ -205,30 +212,11 @@ public class KeyTest {
 				KeyBuilder.parent(keyP3).
 				meta(ACCOUNT).min().
 				build();
-		assertThat(keyA31.compareTo(keyA3max), is(-1));
-		assertThat(keyA31.compareTo(keyA3min), is(1));
-	}
-	@Test
-	public void testCompareTo_Case006(){
-		PersonMeta PERSON = PersonMeta.get();
-		Key<Person, Long> keyP3 = 
-				KeyBuilder.root().
-				meta(PERSON).is(3L).
-				build();
-		Key<Person, Long> keyPMax = 
-				KeyBuilder.root().
-				meta(PERSON).max().
-				build();
-		Key<Person, Long> keyPMin = 
-				KeyBuilder.root().
-				meta(PERSON).min().
-				build();
-		AccountMeta ACCOUNT = AccountMeta.get();
-		Key<Account, String> keyA31 = 
-				KeyBuilder.parent(keyP3).
-				meta(ACCOUNT).is("args00").
-				build();
-		assertThat(keyA31.compareTo(keyPMax), is(-1));
-		assertThat(keyA31.compareTo(keyPMin), is(1));
+		assertThat(
+				KeyComparator.comparator(ACCOUNT).compare(keyA31,keyA3max),
+				is(-1));
+		assertThat(
+				KeyComparator.comparator(ACCOUNT).compare(keyA31,keyA3min),
+				is(1));
 	}
 }

@@ -18,6 +18,10 @@ class SuffixBeanMetaImpl<BT, KT> implements SuffixBeanMeta<BT, KT>{
 		return delegate.key(parent, value);
 	}
 	@Override
+	public String getNamespace() {
+		return delegate.getNamespace();
+	}
+	@Override
 	public String getName() {
 		return delegate.getName();
 	}
