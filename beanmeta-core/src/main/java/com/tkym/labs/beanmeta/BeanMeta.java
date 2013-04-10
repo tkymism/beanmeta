@@ -4,6 +4,8 @@ import java.util.Set;
 
 public interface BeanMeta<BT,KT>{
 	public Key<BT,KT> key(Key<?,?>parent,  KT value);
+	public Key<BT,KT> maxKey(Key<?,?>parent);
+	public Key<BT,KT> minKey(Key<?,?>parent);
 	public String getName();
 	public String getNamespace();
 	public Class<BT> getBeanType();

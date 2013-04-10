@@ -2,6 +2,12 @@ package com.tkym.labs.beanmeta;
 
 import java.util.Set;
 
+/**
+ * 
+ * @author takayama
+ * @param <BT>
+ * @param <KT>
+ */
 class SuffixBeanMetaImpl<BT, KT> implements SuffixBeanMeta<BT, KT>{
 	private final BeanMeta<BT,KT> delegate;
 	private final String suffix;
@@ -16,6 +22,14 @@ class SuffixBeanMetaImpl<BT, KT> implements SuffixBeanMeta<BT, KT>{
 	@Override
 	public Key<BT, KT> key(Key<?, ?> parent, KT value) {
 		return delegate.key(parent, value);
+	}
+	@Override
+	public Key<BT, KT> maxKey(Key<?, ?> parent) {
+		return delegate.maxKey(parent);
+	}
+	@Override
+	public Key<BT, KT> minKey(Key<?, ?> parent) {
+		return delegate.minKey(parent);
 	}
 	@Override
 	public String getNamespace() {
