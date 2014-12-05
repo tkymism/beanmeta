@@ -1,19 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.tkym.labs</groupId>
-	<artifactId>beanmeta</artifactId>
+	<groupId>com.tkym.labs.beanmeta</groupId>
+	<artifactId>beanmeta-pom</artifactId>
 	<packaging>pom</packaging>
 	<version>0.1</version>
-	<name>beanmeta</name>
-	<url>http://github.com/tkymism/beanmeta</url>
-	<modules>
-		<module>beanmeta-pom</module>
-		<module>beanmeta-core</module>
-		<module>beanmeta-util</module>
-		<module>beanmeta-gen</module>
-		<module>beanmeta-test</module>
-	</modules>
+	<name>beanmeta-pom</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>

@@ -1,21 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<artifactId>beanmeta-gen</artifactId>
 	<packaging>jar</packaging>
-	<name>beanmeta-util</name>
+	<name>beanmeta-gen</name>
 	<properties>
 		<com.sun.tools.version>1.6.0_29</com.sun.tools.version>
 	</properties>
 	<parent>
-		<groupId>com.tkym.labs</groupId>
-		<artifactId>beanmeta</artifactId>
+		<groupId>com.tkym.labs.beanmeta</groupId>
+		<artifactId>beanmeta-pom</artifactId>
+		<relativePath>../beanmeta-pom</relativePath>
 		<version>0.1</version>
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>com.tkym.labs</groupId>
+			<groupId>com.tkym.labs.beanmeta</groupId>
 			<artifactId>beanmeta-core</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
