@@ -5,17 +5,19 @@
 	<artifactId>beanmeta-gen</artifactId>
 	<packaging>jar</packaging>
 	<name>beanmeta-util</name>
-	<url>http://maven.apache.org</url>
+	<properties>
+		<com.sun.tools.version>1.6.0_29</com.sun.tools.version>
+	</properties>
 	<parent>
 		<groupId>com.tkym.labs</groupId>
-		<artifactId>beanmeta-pom</artifactId>
-		<version>1.0</version>
+		<artifactId>beanmeta</artifactId>
+		<version>${project.version}</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>com.tkym.labs</groupId>
 			<artifactId>beanmeta-core</artifactId>
-			<version>1.0</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<profiles>
@@ -31,7 +33,7 @@
 				<dependency>
 					<groupId>com.sun</groupId>
 					<artifactId>tools</artifactId>
-					<version>1.6.0_29</version>
+					<version>${com.sun.tools.version}</version>
 				</dependency>
 			</dependencies>
 		</profile>

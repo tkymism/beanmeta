@@ -1,22 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<artifactId>beanmeta-util</artifactId>
 	<packaging>jar</packaging>
-
 	<name>beanmeta-util</name>
-	<url>http://maven.apache.org</url>
 	<parent>
 		<groupId>com.tkym.labs</groupId>
-		<artifactId>beanmeta-pom</artifactId>
-		<version>1.0</version>
+		<artifactId>beanmeta</artifactId>
+		<version>${project.version}</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>com.tkym.labs</groupId>
 			<artifactId>beanmeta-core</artifactId>
-			<version>1.0</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>
