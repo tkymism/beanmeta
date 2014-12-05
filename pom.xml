@@ -4,7 +4,7 @@
 	<groupId>com.tkym.labs</groupId>
 	<artifactId>beanmeta</artifactId>
 	<packaging>pom</packaging>
-	<version>${project.version}</version>
+	<version>0.1</version>
 	<name>beanmeta</name>
 	<url>http://github.com/tkymism/beanmeta</url>
 	<modules>
@@ -14,7 +14,6 @@
 		<module>beanmeta-test</module>
 	</modules>
 	<properties>
-		<project.version>0.1</project.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<junit.version>4.9</junit.version>

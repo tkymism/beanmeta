@@ -7,6 +7,6 @@
 	<parent>
 		<groupId>com.tkym.labs</groupId>
 		<artifactId>beanmeta</artifactId>
-		<version>${project.version}</version>
+		<version>0.1</version>
 	</parent>
 </project>

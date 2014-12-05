@@ -11,6 +11,7 @@ public class CsvBeanConverter<BT,KT> {
 	private PropertyMeta<BT, ?>[] properties;
 	private CsvLineResolver resolver = new CsvLineResolver("\"");
 	
+	@SafeVarargs
 	CsvBeanConverter(BeanMeta<BT,KT> beanMeta, PropertyMeta<BT, ?>... properties){
 		this.beanMeta = beanMeta;
 		this.properties = properties;

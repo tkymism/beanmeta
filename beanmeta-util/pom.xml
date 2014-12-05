@@ -7,13 +7,13 @@
 	<parent>
 		<groupId>com.tkym.labs</groupId>
 		<artifactId>beanmeta</artifactId>
-		<version>${project.version}</version>
+		<version>0.1</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>com.tkym.labs</groupId>
 			<artifactId>beanmeta-core</artifactId>
-			<version>${project.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
 </project>
